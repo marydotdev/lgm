@@ -1,24 +1,72 @@
 <script>
 	export let data;
 
-  let games = data.data.dates[0].games
-  //console.log(games)
-  let apiUrl = "https://statsapi.mlb.com"
-
+	let games = data.data.dates[0].games;
+	// console.log(games)
+	let apiUrl = 'https://statsapi.mlb.com';
 </script>
 
 <div>
-	<h1>Let's go Mets!</h1>
+	<div class="header">
+    <h1>❖ Gameday</h1>
+    <h2>Today's Schedule</h2>
+  </div>
 
-  <h2>Schedule</h2>
-
-  {#each games as game}
-  <p>{new Date(game.gameDate).toLocaleDateString('en-US', {
-		hour: 'numeric',
-		minute: '2-digit'
-	})}</p>
-  <p>Home: {game.teams.home.team.name}</p>
-  <p>Away: {game.teams.away.team.name}</p>
-  <a href={apiUrl + game.link}>link</a>
-  {/each}
+	<div class="grid">
+		{#each games as game}
+    <a href="/{game.gamePk}">
+			<div class="gamecard">
+				<p>
+					{new Date(game.gameDate).toLocaleTimeString('en-US', {
+						hour: 'numeric',
+						minute: '2-digit'
+					})}
+				</p>
+				<div class="score-container">
+					<span>{game.teams.away.team.name}</span>
+					<span>{game.teams.away.score}</span>
+				</div>
+				<div class="score-container">
+					<span>{game.teams.home.team.name}</span>
+					<span>{game.teams.home.score}</span>
+				</div>
+			</div>
+    </a>
+		{/each}
+	</div>
 </div>
+
+<style>
+	:root {
+		background-color: wheat;
+		/* background-image: url('https://www.transparenttextures.com/patterns/paper-2.png'); */
+		font-family: sans-serif;
+	}
+  a {
+    text-decoration: none;
+    color: #000;
+  }
+	.grid {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 40px;
+    max-width: 60rem;
+    margin-left: auto;
+    margin-right: auto;
+    justify-items: center;
+	}
+	.gamecard {
+		border: 2px black solid;
+    /* border-radius: 1rem; */
+		width: 12rem;
+		padding: 10px;
+	}
+	.score-container {
+		display: flex;
+		width: 100%;
+		justify-content: space-between;
+	}
+  .header {
+    text-align: center;
+  }
+</style>
